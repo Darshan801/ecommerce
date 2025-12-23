@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # costum apps
     'core',
+    'authcart',
 
 ]
 
