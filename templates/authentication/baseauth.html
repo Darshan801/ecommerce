@@ -37,7 +37,7 @@
   <header id="header" class="header d-flex align-items-center sticky-top">
     <div class="container position-relative d-flex align-items-center justify-content-between">
 
-      <a href="/" class="logo d-flex align-items-center me-auto me-xl-0">
+      <a href="index.html" class="logo d-flex align-items-center me-auto me-xl-0">
         <!-- Uncomment the line below if you also wish to use an image logo -->
         <!-- <img src="static/assets/img/logo.webp" alt=""> -->
         <i class="bi bi-fork-knife"></i>
@@ -77,60 +77,22 @@
         <div class="row g-0 align-items-center">
           <div class="col-lg-6 content-col">
             <div class="content-wrapper">
+              {% block bodyforms %}
               
-              {% block content %}
               
               
-              {% endblock content %}
+              
+              
+              
+              
+              {% endblock bodyforms %}
 
+              
 
-              <div class="social-links">
-                <a href="#"><i class="bi bi-facebook"></i></a>
-                <a href="#"><i class="bi bi-instagram"></i></a>
-                <a href="#"><i class="bi bi-twitter"></i></a>
-                <a href="#"><i class="bi bi-youtube"></i></a>
-              </div>
+              
+
+          
             </div>
-          </div>
-
-          <div class="col-lg-6 swiper-col">
-            <div class="swiper hero-swiper init-swiper" data-aos="zoom-out" data-aos-delay="100">
-              <script type="application/json" class="swiper-config">
-                {
-                  "loop": true,
-                  "speed": 800,
-                  "autoplay": {
-                    "delay": 5000
-                  },
-                  "effect": "fade",
-                  "slidesPerView": 1,
-                  "navigation": {
-                    "nextEl": ".swiper-button-next",
-                    "prevEl": ".swiper-button-prev"
-                  }
-                }
-              </script>
-              <div class="swiper-wrapper">
-                <div class="swiper-slide">
-                  <div class="img-container">
-                    <img src="static/assets/img/restaurant/misc-square-1.webp" alt="Restaurant Ambience">
-                  </div>
-                </div>
-                <div class="swiper-slide">
-                  <div class="img-container">
-                    <img src="static/assets/img/restaurant/misc-square-2.webp" alt="Signature Dish">
-                  </div>
-                </div>
-                <div class="swiper-slide">
-                  <div class="img-container">
-                    <img src="static/assets/img/restaurant/misc-square-3.webp" alt="Expert Chefs">
-                  </div>
-                </div>
-              </div>
-              <div class="swiper-button-next"></div>
-              <div class="swiper-button-prev"></div>
-            </div>
-
           </div>
         </div>
       </div>
