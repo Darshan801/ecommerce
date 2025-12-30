@@ -1,1 +1,45 @@
-login
+{% extends "authentication/baseauth.html" %}
+{% block title %}Login{% endblock title %}
+{% block content %}
+
+
+
+<div class="form_card border border-secondary rounded-2 py-2 px-3 m-2">
+    {% for message in messages %}
+        <div class="alert alert-{{message.tags}} alert-dismissible fade show" role="alert">
+            <strong>{{message}}</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                 aria-label="Close">
+                
+                </button>
+        </div>
+    
+    {% endfor %}
+  <p class="text-center underline-success">Login here</p>
+ <form action="/auth/login/" method="POST">
+  {% csrf_token %}
+  <div class="mb-3">
+    <label for="email" class="form-label">Email address</label>
+    <input type="email" class="form-control" id="email" name="email" placeholder="example@gmail.com" required>
+    
+  </div>
+  <div class="mb-3">
+    <label for="pass1" class="form-label">Password</label>
+    <input type="password" class="form-control" name="pass1" id="pass1" required>
+  </div>
+
+ 
+  <button type="submit" class="btn btn-primary m-2 px-2">Login</button>
+  <br/>
+  
+  <div class="mb-3 d-flex justify-content-between">
+    New user?<a href="/auth/signup" class="text-white" >Sign up<a/>
+    
+    
+  </div>
+</form>
+
+
+</div>
+{% endblock content%}
+    
