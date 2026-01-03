@@ -20,7 +20,7 @@
   {% csrf_token %}
   <div class="mb-3 text-black">
     <label for="fullname" class="form-label">Full name</label>
-    <input type="text" class="form-control" id="fullname" name="fullname" placeholder="Enter your full name" required>
+    <input type="text" class="form-control" id="fullname" name="fullname" value="{{fullname|default_if_none:''}}" placeholder="Enter your full name" required>
     
   </div>
   <div class="mb-3 text-black">
@@ -32,13 +32,13 @@
     <label for="desc" class="form-label">How can i help you?</label>
     <br>
     <textarea type="text" name="desc" id="desc">
-
+      {{desc |default_if_none:''}}
     </textarea>
     
   </div>
 
   <div class="mb-3 text-black">
-    <label for="phone" class="form-label">Phone number</label>
+    <label for="phone" class="form-label" value="{{phone|default_if_none:''}}">Phone number</label>
     <input type="number" class="form-control" id="phone" name="phone" placeholder="Enter your number" required>
     
   </div>

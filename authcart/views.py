@@ -10,12 +10,23 @@ from django.utils.encoding import force_bytes , force_str , DjangoUnicodeDecodeE
 from django.core.mail import EmailMessage
 from django.conf import settings
 from django.contrib.auth import authenticate , login , logout
+import re
 # Create your views here.
 def sign_up(request):
     if(request.method=='POST'):
         email=request.POST['email']
         password=request.POST['pass1']
         confirm_password=request.POST['pass2']
+        #password validation
+        if(
+            len(password) < 8 or 
+            not re.search(r"[A-Za-z]",password) or
+            not re.search(r"[0-9]",password) or
+            not re.search(r"[!@#$%^&*(),.?\":{}|<>]",password)
+        ):
+            messages.warning(request,"Password must be at least 8 characters long and contain a letter, a number, and a special character")
+            return render(request,'authentication/signup.html')
+        # password match check
         if password != confirm_password:
             messages.warning(request,"password don't  match")
             # return HttpResponse("password dont match")

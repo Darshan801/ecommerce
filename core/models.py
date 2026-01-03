@@ -23,3 +23,10 @@ class Product(models.Model):
 
     def __str__(self):
         return self.product_name
+    
+    def save(self,*args, **kwargs):
+        if (self.product_name , self.category,self.sub_category):
+            self.product_name=self.product_name.title()
+            self.category=self.category.title()
+            self.sub_category=self.sub_category.title()
+            super().save(*args , **kwargs)
