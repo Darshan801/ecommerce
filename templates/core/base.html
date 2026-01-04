@@ -49,8 +49,16 @@
           <li><a href="/" class="active">Home</a></li>
           <li><a href="/blog">Chefs</a></li>
           <li><a href="/about">About</a></li>
-          <li><a href="/orders">Orders</a></li>
+          <li><a href="/checkout">Checkout</a></li>
           <li><a href="/profile">My Profile</a></li>
+          {% comment %} <li><a class="text-success"  href="/cart">Cart</a></li> {% endcomment %}
+
+          <button type="button" class="btn btn-lg text-success border-bottom rounded-0" data-bs-toggle="popover" data-placement="bottom" 
+          data-bs-title="Popover title">cart(<span id="cart">0</span>)</button>
+          
+
+
+
           {% if request.user.is_authenticated %}
           <li><a href="/auth/logout">Logout</a></li>
           {% else %}
@@ -62,13 +70,13 @@
             </ul>
           </li>
           {% endif %}
-          <li><a class="text-success "  href="/cart">Cart</a></li>
+         
           <li><a class="text-warning" href="/contact">Contact</a></li>
         </ul>
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>
 
-      <a class="btn-getstarted d-none d-sm-block" href="#book-a-table">Book a Table</a>
+      <a class="btn-getstarted d-none d-sm-block" href="#book-a-table">Search</a>
 
     </div>
   </header>

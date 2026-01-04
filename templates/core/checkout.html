@@ -1,0 +1,190 @@
+{% extends "core/base.html" %}
+{% load static %}
+{% block title %}Check out{% endblock title %}
+{% block content %}
+<h2>Welcome to foodies</h2>
+
+<section id="portfolio" class="portfolio">
+
+<div class="container bg-white p-4 rounded">
+
+  {% for message in messages %}
+  <div class="alert alert-{{message.tags}} alert-dismissible fade show" role="alert">
+      <strong>{{message}}</strong>
+          <button type="button" class="btn-close" data-bs-dismiss="alert"
+           aria-label="Close">
+          
+          </button>
+  </div>
+
+{% endfor %}
+
+<div class="section-title">
+    <h2 class="text-black mb-1">Check out here</h2>
+
+</div>
+
+<div class="container">
+    <div class="col my-4">
+        <h4 class="text-black mb-1">Review your cart items:</h4>
+            <div class="my-4">
+                <ul class="list-group" id="items"></ul>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb mt-3">
+                            <li class="breadcrumb-item active" aria-current="page">Your Cart Total is :
+                                <b>Rs.
+                                    <span id="totalprice"></span>
+                                    <span id="amount"></span>
+                                </b>Enter your detalils below and place your orders
+
+                            </li>
+                        </ol>
+                    </nav>
+            </div>
+    </div>
+</div>
+<div class="col my-4">
+    <h3 class="text-black mb-1">Enter Address and other details:</h3>
+    <form action="/checkout/" method="POST">
+  {% csrf_token %}
+  <input type="hidden" name="itemsJson" id="itemsJson">
+
+  <input type="hidden" name="amt" id="amt" value="0">
+  
+  {% comment %} name {% endcomment %}
+  <div class="form-row mb-3">
+        <div class="form-group col-md-6">
+            <label class="text-black mb-1" for="inputname">Name</label>
+            <input type="text" class="form-control mb-1" id="name" name="name" placeholder="Enter your name" required>
+        </div>
+
+        <div class="form-group col-md-6">
+            <label class="text-black mb-1" for="inputemail">Email</label>
+            <input type="email" class="form-control mb-1" id="email" name="email" placeholder="example@gmail.com" value="{{user.email}}" required>
+        </div>
+  </div>
+
+  {% comment %} address {% endcomment %}
+  <div class="form-row">
+    <div class="form-group col-md-6">
+         <label class="text-black mb-1" for="inputaddress">Address line 1</label>
+        <input type="text" class="form-control mb-1" id="address1" name="address1" placeholder="" required>
+    </div>
+
+    <div class="form-group col-md-6">
+         <label class="text-black mb-1" for="inputaddress">Address line 2</label>
+        <input type="text" class="form-control mb-1" id="address2" name="address2" placeholder="" required>
+    </div>
+  </div>
+
+  {% comment %} city {% endcomment %}
+  <div class="form-row">
+    <div class="form-group col-md-6">
+         <label class="text-black mb-1" for="inputcity">city</label>
+        <input type="text" class="form-control mb-1" id="city" name="city" placeholder="">
+    </div>
+
+    <div class="form-group col-md-6">
+         <label class="text-black mb-1" for="inputcity">state</label>
+        <input type="text" class="form-control mb-1" id="state" name="state" placeholder="">
+    </div>
+  </div>
+
+  {% comment %} phone number {% endcomment %}
+  <div class="form-row">
+    <div class="form-group col-md-6">
+         <label class="text-black mb-1" for="inputphone">phone</label>
+        <input type="text" class="form-control mb-1" id="phone" name="phone" placeholder="98xxxxxxxx" required>
+    </div>
+  </div>
+ 
+  
+  
+ 
+  <button type="submit" id="btn" class="btn btn-primary m-2 px-2">place order</button>
+  
+</form>
+
+
+
+</div>
+   
+</section>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.min.js" integrity="sha384-G/EV+4j2dNv+tEPo3++6LCgdCROaejBqfUeNjuKAiuXbjrxilcCdDz6ZAVfHWe1Y" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+<script>
+    if (localStorage.getItem('cart') == null) {
+    var cart = {};
+  } else {
+      cart = JSON.parse(localStorage.getItem('cart'));
+      // Validate cart structure
+      }
+      console.log(cart)
+     var sum = 0;
+var totalPrice = 0;
+
+if ($.isEmptyObject(cart)) {
+    mystr = '<p>Your cart is empty, please add items before checkout!</p>';
+    $('#items').append(mystr);
+} else {
+    for (let item in cart) {
+        let name = cart[item][1];
+        let qty = cart[item][0];
+        let itemPrice = cart[item][2];
+
+        sum += qty;
+        totalPrice += qty * itemPrice;
+
+        mystr = `
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            ${name}
+            <div><b>Price: ${itemPrice}</b></div>
+            <span class="badge badge-primary badge-pill">${qty}</span>
+        </li>`;
+        $('#items').append(mystr);
+    }
+}
+
+// show total
+document.getElementById('totalprice').innerHTML = totalPrice;
+
+// send data to backend
+document.getElementById('amt').value = totalPrice || 0;
+
+$('#itemsJson').val(JSON.stringify(cart));
+{% comment %} localStorage.remove item('cart') {% endcomment %}
+
+
+{% comment %} {% if order_success %}
+
+    alert("Order placed successfully!");
+
+    // Best practice
+    localStorage.removeItem('cart');
+
+    // OR if you insist
+    // localStorage.clear();
+
+    document.getElementById('items').innerHTML = 
+        "<p>Your cart is empty</p>";
+    document.getElementById('totalprice').innerHTML = "0";
+    document.getElementById('amt').value = 0;
+
+{% endif %} {% endcomment %}
+// for payment
+{% comment %} {% if thank %}
+alert("Thanks for ordering with us. Your order id is {{id}}")
+localStorage.clear()
+document.location="/"
+{% endif %}
+
+var test = `${totalPrice}`;
+document.getElementById("amt").value = test; {% endcomment %}
+    
+</script>
+
+{% endblock content %}

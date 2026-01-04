@@ -1,6 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.http import HttpResponse
-from core.models import Contact,Product
+from core.models import Contact,Product,Orders,OrderUpdate
 from django.contrib import messages
 from math import ceil
 
@@ -44,3 +44,40 @@ def about(request):
 
 def sign_in(request):
     return render(request,'core/signin.html')
+
+def checkout(request):
+    if not request.user.is_authenticated:
+        messages.warning(request,"Login first")
+        return redirect('/auth/login')
+    if request.method=='POST':
+        items_json=request.POST.get('itemsJson','')
+        name=request.POST.get('name','')
+        email=request.POST.get('email','')
+        address1=request.POST.get('address1','')
+        address2=request.POST.get('address2','')
+        city=request.POST.get('city','')
+        state=request.POST.get('state','')
+        phone=request.POST.get('phone','')
+
+        amount=request.POST.get('amt')
+        try:
+            amount = int(amount)
+        except (TypeError, ValueError):
+             amount = 0
+        Order = Orders(
+            items_json=items_json,
+            name=name,
+            email=email,
+            amount=amount,
+            address1=address1,
+            address2=address2,
+            city=city,
+            state=state,
+            phone=phone
+        )
+        Order.save()
+        
+        update=OrderUpdate(order_id=Order.order_id,update_desc="Order placed")
+        update.save()
+    return render(request,'core/checkout.html')
+
